@@ -22,7 +22,7 @@ export function StoreSidebar({
         className="sticky top-20 rounded-2xl shadow-md overflow-hidden border"
         style={{
           borderColor: "var(--color-store-beige-200)",
-          backgroundColor: "white",
+          backgroundColor: "var(--surface-bg)",
         }}
       >
         {/* Cabeçalho da sidebar */}
@@ -31,7 +31,7 @@ export function StoreSidebar({
           style={{ backgroundColor: "var(--color-store-green)" }}
         >
           <h2 className="text-white font-bold text-base">Categorias</h2>
-          <p className="text-sm mt-0.5" style={{ color: "var(--color-store-green-light)" }}>
+          <p className="text-sm mt-0.5 text-[#95d5b2] dark:text-white">
             Encontre o vaso ideal
           </p>
         </div>
@@ -49,12 +49,12 @@ export function StoreSidebar({
                   "transition-all duration-200 cursor-pointer text-sm font-medium",
                   isSelected
                     ? "text-white shadow-sm"
-                    : "text-gray-700 hover:bg-[--color-store-beige-100]"
+                    : "hover:bg-[--color-store-beige-100]"
                 )}
                 style={
                   isSelected
                     ? { backgroundColor: "var(--color-store-green)" }
-                    : undefined
+                    : { color: "var(--sidebar-text)" }
                 }
               >
                 <span className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export function StoreSidebar({
                       ? { backgroundColor: "rgba(255,255,255,0.22)", color: "white" }
                       : {
                           backgroundColor: "var(--color-store-beige-200)",
-                          color: "var(--color-store-beige-dark)",
+                          color: "var(--sidebar-text)",
                         }
                   }
                 >
@@ -88,7 +88,7 @@ export function StoreSidebar({
           className="mx-3 mb-3 mt-1 rounded-xl px-3 py-3 text-xs text-center"
           style={{
             backgroundColor: "var(--color-store-beige-100)",
-            color: "var(--color-store-beige-dark)",
+            color: "var(--sidebar-text)",
           }}
         >
           <p className="font-medium">Precisa de ajuda?</p>
@@ -98,7 +98,7 @@ export function StoreSidebar({
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 inline-block font-semibold underline underline-offset-2"
-            style={{ color: "var(--color-store-green)" }}
+            style={{ color: "var(--sidebar-link)" }}
           >
             💬 Chamar no WhatsApp
           </a>

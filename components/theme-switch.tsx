@@ -1,3 +1,5 @@
+"use client";
+
 import { FC, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import clsx from "clsx";
@@ -27,6 +29,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className }) => {
 
   return (
     <button
+      type="button"
       aria-label={`Switch to ${isLight ? "dark" : "light"} mode`}
       className={clsx(
         "px-px transition-opacity hover:opacity-80 cursor-pointer",
@@ -36,7 +39,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className }) => {
       )}
       onClick={handleToggle}
     >
-      {isLight ? <SunFilledIcon size={22} /> : <MoonFilledIcon size={22} />}
+      {isLight ? <MoonFilledIcon size={22} /> : <SunFilledIcon size={22} />}
     </button>
   );
 };

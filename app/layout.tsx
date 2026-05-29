@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { fontSans } from "@/config/fonts";
 import { StoreHeader } from "@/components/store-header";
 import { StoreFooter } from "@/components/store-footer";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "AquaTerra Vasos",
@@ -22,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head />
       <body
         className={clsx(
@@ -31,13 +32,15 @@ export default function RootLayout({
         )}
         style={{ backgroundColor: "var(--color-store-beige)" }}
       >
-        <div className="flex flex-col min-h-screen">
-          <StoreHeader />
-          <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-6">
-            {children}
-          </main>
-          <StoreFooter />
-        </div>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+          <div className="flex flex-col min-h-screen">
+            <StoreHeader />
+            <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-6">
+              {children}
+            </main>
+            <StoreFooter />
+          </div>
+        </Providers>
       </body>
     </html>
   );

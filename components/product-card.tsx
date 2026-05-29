@@ -69,8 +69,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card
-      className="group border hover:shadow-lg transition-all duration-300 bg-white"
-      style={{ borderColor: "var(--color-store-beige-200)" }}
+      className="group border hover:shadow-lg transition-all duration-300"
+      style={{
+        borderColor: "var(--color-store-beige-200)",
+        backgroundColor: "var(--surface-bg)",
+      }}
     >
       {/* Imagem / Thumbnail */}
       <div
@@ -95,10 +98,10 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
 
       <div className="px-4 pt-3 pb-2">
-        <h3 className="font-bold text-gray-800 text-sm leading-tight">
+        <h3 className="font-bold text-sm leading-tight" style={{ color: "var(--text-primary)" }}>
           {product.name}
         </h3>
-        <p className="text-gray-500 text-xs mt-1.5 leading-relaxed line-clamp-2">
+        <p className="text-xs mt-1.5 leading-relaxed line-clamp-2" style={{ color: "var(--color-store-beige-dark)" }}>
           {product.description}
         </p>
       </div>
@@ -117,10 +120,11 @@ export function ProductCard({ product }: ProductCardProps) {
               <Button
                 size="sm"
                 variant="tertiary"
-                className="text-xs flex-1"
+                className="text-xs flex-1 border"
                 style={{
                   backgroundColor: "var(--color-store-beige-100)",
                   color: "var(--color-store-green-dark)",
+                  borderColor: "var(--color-store-beige-200)",
                 }}
               >
                 Detalhes
@@ -129,20 +133,29 @@ export function ProductCard({ product }: ProductCardProps) {
 
             <Modal.Backdrop>
               <Modal.Container size="md" placement="center">
-                <Modal.Dialog>
-                  <Modal.Header className="flex items-center justify-between gap-3">
+                <Modal.Dialog
+                  className="border"
+                  style={{
+                    backgroundColor: "var(--surface-bg)",
+                    borderColor: "var(--color-store-beige-200)",
+                    color: "var(--text-primary)",
+                  }}
+                >
+                  <Modal.Header className="flex items-center justify-between gap-3 border-b" style={{ borderColor: "var(--color-store-beige-200)" }}>
                     <div>
-                      <Modal.Heading className="text-base font-bold text-gray-800">
+                      <Modal.Heading className="text-base font-bold" style={{ color: "var(--text-primary)" }}>
                         {product.name}
                       </Modal.Heading>
-                      <p className="text-xs text-gray-500 mt-1">Categoria: {categoryName}</p>
+                      <p className="text-xs mt-1" style={{ color: "var(--color-store-beige-dark)" }}>
+                        Categoria: {categoryName}
+                      </p>
                     </div>
                     <span className="text-3xl" aria-hidden>
                       {product.emoji}
                     </span>
                   </Modal.Header>
 
-                  <Modal.Body className="space-y-3 text-sm text-gray-700">
+                  <Modal.Body className="space-y-3 text-sm" style={{ color: "var(--text-primary)" }}>
                     <p>{product.description}</p>
 
                     {product.tag && (
@@ -156,34 +169,44 @@ export function ProductCard({ product }: ProductCardProps) {
                     )}
 
                     <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "var(--color-store-beige-100)" }}>
-                      <p className="text-xs text-gray-500">Preço</p>
+                      <p className="text-xs" style={{ color: "var(--color-store-beige-dark)" }}>Preco</p>
                       <p className="text-lg font-bold" style={{ color: "var(--color-store-green)" }}>
                         {formattedPrice}
                       </p>
                     </div>
 
                     <div className="rounded-lg border border-[--color-store-beige-200] p-3">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
+                      <p
+                        className="text-xs font-semibold uppercase tracking-wide mb-2"
+                        style={{ color: "var(--color-store-beige-dark)" }}
+                      >
                         Especificacoes
                       </p>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs sm:text-sm">
-                        <p className="text-gray-500">Tamanho</p>
-                        <p className="font-medium text-gray-800 text-right">{specs.tamanho}</p>
+                        <p style={{ color: "var(--color-store-beige-dark)" }}>Tamanho</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>{specs.tamanho}</p>
 
-                        <p className="text-gray-500">Origem</p>
-                        <p className="font-medium text-gray-800 text-right">{specs.origem}</p>
+                        <p style={{ color: "var(--color-store-beige-dark)" }}>Origem</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>{specs.origem}</p>
 
-                        <p className="text-gray-500">Material</p>
-                        <p className="font-medium text-gray-800 text-right">{specs.material}</p>
+                        <p style={{ color: "var(--color-store-beige-dark)" }}>Material</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>{specs.material}</p>
 
-                        <p className="text-gray-500">Uso ideal</p>
-                        <p className="font-medium text-gray-800 text-right">{specs.uso}</p>
+                        <p style={{ color: "var(--color-store-beige-dark)" }}>Uso ideal</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>{specs.uso}</p>
                       </div>
                     </div>
                   </Modal.Body>
 
-                  <Modal.Footer className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2">
-                    <Modal.CloseTrigger className="static w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-gray-700 border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <Modal.Footer className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 border-t" style={{ borderColor: "var(--color-store-beige-200)" }}>
+                    <Modal.CloseTrigger
+                      className="static w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold border transition-colors"
+                      style={{
+                        color: "var(--text-primary)",
+                        borderColor: "var(--color-store-beige-200)",
+                        backgroundColor: "var(--color-store-beige-100)",
+                      }}
+                    >
                       <span aria-hidden>✕</span>
                       Fechar detalhes
                     </Modal.CloseTrigger>

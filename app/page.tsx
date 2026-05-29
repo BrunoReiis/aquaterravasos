@@ -36,7 +36,7 @@ export default function Home() {
     <>
       {/* Banner hero */}
       <div
-        className="w-full rounded-2xl mb-6 px-6 py-8 md:px-8 md:py-10 flex flex-col gap-3 relative overflow-hidden"
+        className="w-full rounded-2xl mb-6 px-6 py-8 md:px-8 md:py-10 flex flex-col gap-3 relative overflow-hidden text-center md:text-left items-center md:items-start"
         style={{
           backgroundImage:
             "linear-gradient(120deg, rgba(27,67,50,0.88), rgba(45,106,79,0.72)), url('/Assets/Vasos.png')",
@@ -78,7 +78,7 @@ export default function Home() {
                         borderColor: "var(--color-store-green)",
                       }
                     : {
-                        backgroundColor: "white",
+                        backgroundColor: "var(--surface-bg)",
                         color: "var(--color-store-green-dark)",
                         borderColor: "var(--color-store-beige-200)",
                       }
@@ -109,10 +109,10 @@ export default function Home() {
           <div className="flex items-center gap-3 mb-5">
             <span className="text-2xl">{currentCategory?.icon}</span>
             <div>
-              <h2 className="font-bold text-gray-800 text-xl">
+              <h2 className="font-bold text-xl" style={{ color: "var(--text-primary)" }}>
                 {currentCategory?.label}
               </h2>
-              <p className="text-gray-400 text-sm">
+              <p className="text-sm" style={{ color: "var(--color-store-beige-dark)" }}>
                 {filtered.length} produto{filtered.length !== 1 ? "s" : ""}{" "}
                 encontrado{filtered.length !== 1 ? "s" : ""}
               </p>
@@ -127,7 +127,7 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+            <div className="flex flex-col items-center justify-center py-20" style={{ color: "var(--color-store-beige-dark)" }}>
               <span className="text-5xl mb-3">🔍</span>
               <p className="font-medium">Nenhum produto encontrado</p>
             </div>

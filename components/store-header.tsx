@@ -1,8 +1,16 @@
 import Image from "next/image";
 
+import { ThemeSwitch } from "@/components/theme-switch";
+
 export function StoreHeader() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[--color-store-beige-200] bg-white/95 backdrop-blur-md shadow-sm">
+    <header
+      className="sticky top-0 z-50 w-full border-b backdrop-blur-md shadow-sm"
+      style={{
+        borderColor: "var(--header-border)",
+        backgroundColor: "var(--header-bg)",
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-3">
         {/* Logo + Nome */}
         <div className="flex items-center gap-2.5 shrink-0">
@@ -18,7 +26,7 @@ export function StoreHeader() {
           <div className="leading-tight">
             <h1
               className="font-bold text-base md:text-lg tracking-tight"
-              style={{ color: "var(--color-store-green)" }}
+              style={{ color: "var(--brand-color)" }}
             >
               AquaTerra
             </h1>
@@ -33,6 +41,12 @@ export function StoreHeader() {
 
         {/* Contato rápido */}
         <div className="flex items-center gap-2 text-sm shrink-0">
+          <div
+            className="flex items-center justify-center rounded-full p-1"
+            style={{ backgroundColor: "var(--color-store-beige-100)" }}
+          >
+            <ThemeSwitch className="text-[var(--color-store-green-dark)]" />
+          </div>
           <a
             href="tel:+5511981373932"
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium"
@@ -48,7 +62,7 @@ export function StoreHeader() {
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-white"
-            style={{ backgroundColor: "var(--color-store-green)" }}
+            style={{ backgroundColor: "var(--button-color)" }}
           >
             💬 <span className="hidden sm:inline">WhatsApp</span>
           </a>

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function StoreFooter() {
   return (
-    <footer style={{ backgroundColor: "var(--color-store-green-dark)" }} className="text-white mt-16">
+    <footer style={{ backgroundColor: "var(--surface-bg)" }} className="text-white mt-16">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10">
           {/* Marca */}
