@@ -116,7 +116,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <Modal.Trigger>
               <Button
                 size="sm"
-                variant="flat"
+                variant="tertiary"
                 className="text-xs flex-1"
                 style={{
                   backgroundColor: "var(--color-store-beige-100)",
