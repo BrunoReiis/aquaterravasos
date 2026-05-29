@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	--font-sans: "font", sans-serif;
+	--font-mono: "monospace", monospace;
+
+	/* Paleta principal da loja */
+	--color-store-green: #2d6a4f;
+	--color-store-green-dark: #1b4332;
+	--color-store-green-medium: #40916c;
+	--color-store-green-light: #95d5b2;
+
+	--color-store-beige: #fdf8f0;
+	--color-store-beige-100: #f5ede0;
+	--color-store-beige-200: #e8d5bc;
+	--color-store-beige-300: #d4b896;
+	--color-store-beige-dark: #9c7c5a;
+}
+
+html, body {
+	background-color: var(--color-store-beige);
+}
