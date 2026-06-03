@@ -1,71 +1,34 @@
+"use client";
+
+import { useState } from "react";
 import { Card, Button, Chip, Modal } from "@heroui/react";
 import { Product } from "@/config/products";
 
 interface ProductCardProps {
-  product: Product;
+  products: Product[];
 }
 
-export function ProductCard({ product }: ProductCardProps) {
-  const formattedPrice = `R$ ${product.price.toFixed(2).replace(".", ",")}`;
-  const categoryName = product.category.charAt(0).toUpperCase() + product.category.slice(1);
-  const whatsappMessage = `Ola! Tenho interesse no ${product.name} (${formattedPrice}).`;
-  const whatsappUrl = `https://wa.me/5511981373932?text=${encodeURIComponent(whatsappMessage)}`;
+export function ProductCard({ products }: ProductCardProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const specMap: Record<
-    string,
-    { tamanho: string; origem: string; material: string; uso: string }
-  > = {
-    importados: {
-      tamanho: "M (32cm altura)",
-      origem: "Importado",
-      material: "Porcelana/Cerâmica premium",
-      uso: "Decoração interna",
-    },
-    nacionais: {
-      tamanho: "M (28cm altura)",
-      origem: "Brasil",
-      material: "Cerâmica artesanal",
-      uso: "Sala e varanda",
-    },
-    ceramica: {
-      tamanho: "P/M (22cm altura)",
-      origem: "Brasil",
-      material: "Cerâmica esmaltada",
-      uso: "Suculentas e folhagens",
-    },
-    vidro: {
-      tamanho: "P/M (24cm altura)",
-      origem: "Importado",
-      material: "Vidro soprado",
-      uso: "Hidroponia e arranjos",
-    },
-    suspensos: {
-      tamanho: "M (26cm altura)",
-      origem: "Brasil",
-      material: "Fibra natural + cerâmica",
-      uso: "Jardins verticais",
-    },
-    jardim: {
-      tamanho: "G (40cm altura)",
-      origem: "Brasil",
-      material: "Polietileno/Fibra de cimento",
-      uso: "Ambiente externo",
-    },
-    decorativos: {
-      tamanho: "M/G (35cm altura)",
-      origem: "Importado",
-      material: "Resina/Concreto/Metal",
-      uso: "Ambientes sofisticados",
-    },
+  const product = products[currentIndex];
+  const hasVariants = products.length > 1;
+
+  const prev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((i) => (i - 1 + products.length) % products.length);
+  };
+  const next = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((i) => (i + 1) % products.length);
   };
 
-  const specs =
-    specMap[product.category] ?? {
-      tamanho: "Médio",
-      origem: "Nacional",
-      material: "Cerâmica",
-      uso: "Decoração",
-    };
+  const categoryName =
+    product.acabamentoLabel ||
+    product.category.charAt(0).toUpperCase() + product.category.slice(1);
+
+  const whatsappMessage = `Olá! Tenho interesse no Vaso ${product.name} — acabamento ${product.acabamentoLabel}.`;
+  const whatsappUrl = `https://wa.me/5511981373932?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <Card
@@ -75,15 +38,15 @@ export function ProductCard({ product }: ProductCardProps) {
         backgroundColor: "var(--surface-bg)",
       }}
     >
-      {/* Imagem / Thumbnail */}
-      <div
-        className={`relative w-full h-44 bg-gradient-to-br ${product.gradient} flex items-center justify-center overflow-hidden rounded-t-xl`}
-      >
-        <span className="text-6xl group-hover:scale-110 transition-transform duration-300 select-none">
-          {product.emoji}
-        </span>
+      {/* Imagem */}
+      <div className="relative w-full h-56 rounded-t-xl flex items-center justify-center overflow-hidden" style={{ backgroundColor: "var(--color-store-beige-100)" }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={product.image}
+          alt={`Vaso ${product.name} — ${product.acabamentoLabel}`}
+          className="max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition-transform duration-300"
+        />
 
-        {/* Tag de destaque */}
         {product.tag && (
           <div className="absolute top-3 right-3">
             <Chip
@@ -95,23 +58,81 @@ export function ProductCard({ product }: ProductCardProps) {
             </Chip>
           </div>
         )}
+
+        {/* Badge de acabamento */}
+        <div className="absolute bottom-3 left-3">
+          <Chip
+            size="sm"
+            className="font-medium"
+            style={{ backgroundColor: "rgba(0,0,0,0.45)", color: "white" }}
+          >
+            {product.acabamentoLabel}
+          </Chip>
+        </div>
+
+        {/* Setas de navegação entre variantes */}
+        {hasVariants && (
+          <>
+            <button
+              onClick={prev}
+              aria-label="Acabamento anterior"
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center text-white shadow-md opacity-75 hover:opacity-100 transition-opacity text-base leading-none"
+              style={{ backgroundColor: "rgba(0,0,0,0.45)" }}
+            >
+              ‹
+            </button>
+            <button
+              onClick={next}
+              aria-label="Próximo acabamento"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full flex items-center justify-center text-white shadow-md opacity-75 hover:opacity-100 transition-opacity text-base leading-none"
+              style={{ backgroundColor: "rgba(0,0,0,0.45)" }}
+            >
+              ›
+            </button>
+          </>
+        )}
       </div>
+
+      {/* Dots de acabamento */}
+      {hasVariants && (
+        <div className="flex items-center justify-center gap-2 pt-2 pb-0.5">
+          {products.map((p, i) => (
+            <button
+              key={p.id}
+              onClick={() => setCurrentIndex(i)}
+              aria-label={p.acabamentoLabel}
+              title={p.acabamentoLabel}
+              className="w-2 h-2 rounded-full transition-all duration-200"
+              style={{
+                backgroundColor:
+                  i === currentIndex
+                    ? "var(--color-store-green)"
+                    : "var(--color-store-beige-200)",
+                transform: i === currentIndex ? "scale(1.4)" : "scale(1)",
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="px-4 pt-3 pb-2">
         <h3 className="font-bold text-sm leading-tight" style={{ color: "var(--text-primary)" }}>
           {product.name}
         </h3>
-        <p className="text-xs mt-1.5 leading-relaxed line-clamp-2" style={{ color: "var(--color-store-beige-dark)" }}>
+        <p
+          className="text-xs mt-1.5 leading-relaxed line-clamp-2"
+          style={{ color: "var(--color-store-beige-dark)" }}
+        >
           {product.description}
         </p>
       </div>
 
       <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
         <span
-          className="font-bold text-xl whitespace-nowrap"
+          className="font-bold text-lg italic"
           style={{ color: "var(--color-store-green)" }}
         >
-          {formattedPrice}
+          A Consultar
         </span>
 
         <div className="flex gap-2">
@@ -141,21 +162,74 @@ export function ProductCard({ product }: ProductCardProps) {
                     color: "var(--text-primary)",
                   }}
                 >
-                  <Modal.Header className="flex items-center justify-between gap-3 border-b" style={{ borderColor: "var(--color-store-beige-200)" }}>
+                  <Modal.Header
+                    className="flex items-center justify-between gap-3 border-b"
+                    style={{ borderColor: "var(--color-store-beige-200)" }}
+                  >
                     <div>
-                      <Modal.Heading className="text-base font-bold" style={{ color: "var(--text-primary)" }}>
+                      <Modal.Heading
+                        className="text-base font-bold"
+                        style={{ color: "var(--text-primary)" }}
+                      >
                         {product.name}
                       </Modal.Heading>
                       <p className="text-xs mt-1" style={{ color: "var(--color-store-beige-dark)" }}>
                         Categoria: {categoryName}
                       </p>
                     </div>
-                    <span className="text-3xl" aria-hidden>
-                      {product.emoji}
-                    </span>
                   </Modal.Header>
 
                   <Modal.Body className="space-y-3 text-sm" style={{ color: "var(--text-primary)" }}>
+                    {/* Imagem grande no modal */}
+                    <div className="relative w-full h-64 rounded-xl overflow-hidden border flex items-center justify-center" style={{ borderColor: "var(--color-store-beige-200)", backgroundColor: "var(--color-store-beige-100)" }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={product.image}
+                        alt={`Vaso ${product.name} — ${product.acabamentoLabel}`}
+                        className="max-w-full max-h-full w-auto h-auto object-contain transition-all duration-300"
+                      />
+
+                      {hasVariants && (
+                        <>
+                          <button
+                            onClick={prev}
+                            aria-label="Acabamento anterior"
+                            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center text-white shadow-md opacity-75 hover:opacity-100 transition-opacity text-lg leading-none"
+                            style={{ backgroundColor: "rgba(0,0,0,0.45)" }}
+                          >
+                            ‹
+                          </button>
+                          <button
+                            onClick={next}
+                            aria-label="Próximo acabamento"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center text-white shadow-md opacity-75 hover:opacity-100 transition-opacity text-lg leading-none"
+                            style={{ backgroundColor: "rgba(0,0,0,0.45)" }}
+                          >
+                            ›
+                          </button>
+                          {/* Dots no modal */}
+                          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+                            {products.map((p, i) => (
+                              <button
+                                key={p.id}
+                                onClick={() => setCurrentIndex(i)}
+                                aria-label={p.acabamentoLabel}
+                                title={p.acabamentoLabel}
+                                className="w-2 h-2 rounded-full transition-all duration-200"
+                                style={{
+                                  backgroundColor:
+                                    i === currentIndex
+                                      ? "white"
+                                      : "rgba(255,255,255,0.45)",
+                                  transform: i === currentIndex ? "scale(1.4)" : "scale(1)",
+                                }}
+                              />
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
+
                     <p>{product.description}</p>
 
                     {product.tag && (
@@ -168,10 +242,15 @@ export function ProductCard({ product }: ProductCardProps) {
                       </Chip>
                     )}
 
-                    <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "var(--color-store-beige-100)" }}>
-                      <p className="text-xs" style={{ color: "var(--color-store-beige-dark)" }}>Preco</p>
-                      <p className="text-lg font-bold" style={{ color: "var(--color-store-green)" }}>
-                        {formattedPrice}
+                    <div
+                      className="rounded-lg px-3 py-2"
+                      style={{ backgroundColor: "var(--color-store-beige-100)" }}
+                    >
+                      <p className="text-xs" style={{ color: "var(--color-store-beige-dark)" }}>
+                        Preço
+                      </p>
+                      <p className="text-lg font-bold italic" style={{ color: "var(--color-store-green)" }}>
+                        A Consultar
                       </p>
                     </div>
 
@@ -180,25 +259,43 @@ export function ProductCard({ product }: ProductCardProps) {
                         className="text-xs font-semibold uppercase tracking-wide mb-2"
                         style={{ color: "var(--color-store-beige-dark)" }}
                       >
-                        Especificacoes
+                        Especificações
                       </p>
                       <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-xs sm:text-sm">
-                        <p style={{ color: "var(--color-store-beige-dark)" }}>Tamanho</p>
-                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>{specs.tamanho}</p>
+                        <p style={{ color: "var(--color-store-beige-dark)" }}>Tamanho(s)</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>
+                          {product.specs.tamanhos.length > 0
+                            ? product.specs.tamanhos.join(" / ")
+                            : "—"}
+                        </p>
+
+                        <p style={{ color: "var(--color-store-beige-dark)" }}>Acabamento</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>
+                          {product.acabamentoLabel}
+                        </p>
 
                         <p style={{ color: "var(--color-store-beige-dark)" }}>Origem</p>
-                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>{specs.origem}</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>
+                          {product.specs.origem}
+                        </p>
 
                         <p style={{ color: "var(--color-store-beige-dark)" }}>Material</p>
-                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>{specs.material}</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>
+                          {product.specs.material}
+                        </p>
 
                         <p style={{ color: "var(--color-store-beige-dark)" }}>Uso ideal</p>
-                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>{specs.uso}</p>
+                        <p className="font-medium text-right" style={{ color: "var(--text-primary)" }}>
+                          {product.specs.uso}
+                        </p>
                       </div>
                     </div>
                   </Modal.Body>
 
-                  <Modal.Footer className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 border-t" style={{ borderColor: "var(--color-store-beige-200)" }}>
+                  <Modal.Footer
+                    className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 border-t"
+                    style={{ borderColor: "var(--color-store-beige-200)" }}
+                  >
                     <Modal.CloseTrigger
                       className="static w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold border transition-colors"
                       style={{
@@ -221,7 +318,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         className="text-xs text-white w-full sm:w-auto"
                         style={{ backgroundColor: "var(--color-store-green)" }}
                       >
-                        Comprar no WhatsApp
+                        Consultar no WhatsApp
                       </Button>
                     </a>
                   </Modal.Footer>
@@ -241,7 +338,7 @@ export function ProductCard({ product }: ProductCardProps) {
               className="text-xs text-white w-full"
               style={{ backgroundColor: "var(--color-store-green)" }}
             >
-              Comprar
+              Consultar
             </Button>
           </a>
         </div>
@@ -249,3 +346,4 @@ export function ProductCard({ product }: ProductCardProps) {
     </Card>
   );
 }
+
